@@ -1,21 +1,40 @@
 # Traceman
 
-**TODO: Add description**
+Open Tracing helper for Elixir services.
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `traceman` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:traceman, "~> 0.1.0"}
+    {:traceman, github: "renderedtext/traceman"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/traceman](https://hexdocs.pm/traceman).
+## Usage
 
+### Extract headers from a map
+
+``` elixir
+headers = %{ "A" => "hello", "x-b3-traceid" => "21212121" }
+
+Traceman.extract(headers) # => %{ "x-b3-traceid" => "21212121" }
+```
+
+### Extract headers from a GRPC stream
+
+``` elixir
+defmodule HelleServer do
+
+  def hello(req, stream) do
+    tracing_headers = Traceman.from_grpc_stream(stream)
+
+    req = EchoServer.EchoRequest.new(message: "AAA")
+
+    {:ok, ch} = GRPC.Stub.connect("localhost:50051")
+    {:ok, res} = EchoServer.Stub.echo(ch, req, metadata: tracing_headers)
+  end
+
+end
+```
