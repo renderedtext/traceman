@@ -23,7 +23,9 @@ defmodule Traceman do
   #   Traceman.construct(headers) # => %{ "x-b3-traceid" => "21212121" }
   #
   def construct(map) do
-    Enum.reduce(@tracing_headers, %{}, fn(header_name, result) ->
+    Logger.info "[Traceman] => #{inspect(map)}"
+
+    result = Enum.reduce(@tracing_headers, %{}, fn(header_name, result) ->
       trace_header_value = map[header_name]
 
       if trace_header_value do
@@ -41,6 +43,10 @@ defmodule Traceman do
         result
       end
     end)
+
+    Logger.info "[Traceman] <= #{inspect(result)}"
+
+    result
   end
 
   # Extracts open tracing headers from GRPC headers.
