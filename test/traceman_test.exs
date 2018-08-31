@@ -23,5 +23,4 @@ defmodule TracemanTest do
       assert Traceman.extract(headers) == headers
     end
   end
-
 end
