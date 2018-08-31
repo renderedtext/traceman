@@ -1,4 +1,5 @@
 defmodule Traceman do
+  require Logger
 
   @tracing_headers [
     "x-request-id",
@@ -9,6 +10,8 @@ defmodule Traceman do
     "x-b3-flags",
     "x-ot-span-context"
   ]
+
+  def tracing_headers, do: @tracing_headers
 
   # Extracts open tracing headers from a map.
   #
@@ -49,9 +52,4 @@ defmodule Traceman do
   def from_grpc_stream(stream) do
     stream |> GRPC.Stream.get_headers |> extract
   end
-
-  def from_phoenix_call(call) do
-    %{} # TODO
-  end
-
 end
