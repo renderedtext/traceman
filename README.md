@@ -23,12 +23,12 @@ end
 
 ## Usage
 
-### Extract headers from a map
+### Construct headers from a map
 
 ``` elixir
 headers = %{ "A" => "hello", "x-b3-traceid" => "21212121" }
 
-Traceman.extract(headers) # => %{ "x-b3-traceid" => "21212121" }
+Traceman.construct(headers) # => %{ "x-b3-traceid" => "21212121" }
 ```
 
 ### Extract headers from a GRPC stream

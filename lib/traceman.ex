@@ -5,7 +5,7 @@ defmodule Traceman do
     "x-request-id",
     "x-b3-traceid",
     "x-b3-spanid",
-    "x-b3-parentspanid",
+    # "x-b3-parentspanid", we will construct this based on x-b3-spanid
     "x-b3-sampled",
     "x-b3-flags",
     "x-ot-span-context"
@@ -13,20 +13,27 @@ defmodule Traceman do
 
   def tracing_headers, do: @tracing_headers
 
-  # Extracts open tracing headers from a map.
+  # Extracts open tracing headers from a map, and constructs them for call to an
+  # upstream service.
   #
   # Example:
   #
   #   headers = %{ "A" => "hello", "x-b3-traceid" => "21212121" }
   #
-  #   Traceman.extract(headers) # => %{ "x-b3-traceid" => "21212121" }
+  #   Traceman.construct(headers) # => %{ "x-b3-traceid" => "21212121" }
   #
-  def extract(map) do
-    Enum.reduce(@tracing_headers, %{}, fn(header, result) ->
-      trace_header = map[header]
+  def construct(map) do
+    Enum.reduce(@tracing_headers, %{}, fn(header_name, result) ->
+      trace_header_value = map[header_name]
 
-      if trace_header do
-        Map.put(result, header, trace_header)
+      if trace_header_value do
+        if header_name == "x-b3-spanid" do
+          result
+          |> Map.put("x-b3-spanid", trace_header_value)
+          |> Map.put("x-b3-parentspanid", trace_header_value)
+        else
+          Map.put(result, header_name, trace_header_value)
+        end
       else
         # if there is no such header, we don't inject anything into the
         # just pass it to the next iteration unchanged
@@ -50,6 +57,6 @@ defmodule Traceman do
   #   end
   #
   def from_grpc_stream(stream) do
-    stream |> GRPC.Stream.get_headers |> extract
+    stream |> GRPC.Stream.get_headers |> construct
   end
 end
