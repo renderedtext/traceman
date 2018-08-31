@@ -19,8 +19,8 @@ defmodule Traceman.Mixfile do
 
   defp deps do
     [
-      {:cowboy, "~> 2.0"},
-      {:plug, "~> 1.0"}
+      {:cowboy, "~> 2.0", only: :test},
+      {:plug, "~> 1.0", only: :test}
     ]
   end
 end
