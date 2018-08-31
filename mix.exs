@@ -13,7 +13,7 @@ defmodule Traceman.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :cowboy, :plug]
+      extra_applications: [:logger]
     ]
   end
 
