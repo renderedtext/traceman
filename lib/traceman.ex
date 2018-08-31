@@ -1,18 +1,21 @@
 defmodule Traceman do
-  @moduledoc """
-  Documentation for Traceman.
-  """
 
-  @doc """
-  Hello world.
+  @tracing_headers [
+    "x-request-id",
+    "x-b3-traceid",
+    "x-b3-spanid",
+    "x-b3-parentspanid",
+    "x-b3-sampled",
+    "x-b3-flags",
+    "x-ot-span-context"
+  ]
 
-  ## Examples
-
-      iex> Traceman.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def from_grpc_metadata(metadata) do
+    %{} # TODO
   end
+
+  def from_phoenix_call(call) do
+    %{} # TODO
+  end
+
 end
