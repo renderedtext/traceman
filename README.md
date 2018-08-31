@@ -1,5 +1,8 @@
 # Traceman
 
+[![Build
+Status](https://semaphoreci.com/api/v1/renderedtext/traceman/branches/master/badge.svg)](https://semaphoreci.com/renderedtext/traceman)
+
 Open Tracing helper for Elixir services.
 
 For example, in order to leverage the in depth tracing options of Istio/Jaeger,
