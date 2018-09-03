@@ -4,21 +4,14 @@ defmodule Traceman.Plug.TraceHeaders do
   def init(options), do: options
 
   def call(conn, _opts) do
-    tracing_headers = Enum.reduce(Traceman.tracing_headers, %{}, fn(header, result) ->
+    map = Enum.reduce(Traceman.tracing_headers, %{}, fn(header_name, result) ->
       # there could be multiple headers with the same name
-      http_headers = get_req_header(conn, header)
+      value = get_req_header(conn, header_name) |> List.first()
 
-      if length(http_headers) > 0 do
-        # header found, injecting it
-
-        Map.put(result, header, hd(http_headers))
-      else
-        # if there is no such header, we don't inject anything into the
-        # just pass it to the next iteration unchanged
-
-        result
-      end
+      Map.put(result, header_name, value)
     end)
+
+    tracing_headers = map |> Traceman.construct
 
     assign conn, :tracing_headers, tracing_headers
   end
