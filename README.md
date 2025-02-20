@@ -1,8 +1,5 @@
 # Traceman
 
-[![Build
-Status](https://semaphoreci.com/api/v1/renderedtext/traceman/branches/master/badge.svg)](https://semaphoreci.com/renderedtext/traceman)
-
 Open Tracing helper for Elixir services.
 
 For example, in order to leverage the in depth tracing options of Istio/Jaeger,
@@ -54,3 +51,7 @@ Traceman comes with the `Traceman.Plug.TraceHeaders` plug. It assigns the open
 tracing headers to the connection. They can be retrieved with
 `conn.assigns.tracing_headers` and forwarded in other GRPC or HTTP requests the
 app makes.
+
+## License
+
+This software is licensed under [the Apache 2.0 license](LICENSE).
