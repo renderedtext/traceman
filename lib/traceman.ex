@@ -35,7 +35,7 @@ defmodule Traceman do
           Map.put(result, header_name, trace_header_value)
         end
       else
-        # if there is no such header, we don't inject anything into the
+        # if there is no such header, we don't inject anything into the result,
         # just pass it to the next iteration unchanged
 
         result
